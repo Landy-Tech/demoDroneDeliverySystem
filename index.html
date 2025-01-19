@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drone Simulator</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <script defer src="script.js"></script>
+</head>
+<body>
+    <div id="app">
+        <form id="deliveryForm">
+            <h1>Start Delivery</h1>
+            <input type="text" id="landAirId" placeholder="Land Air ID" required>
+            <input type="text" id="deliveryName" placeholder="Delivery Name" required>
+            <button type="submit">Start Delivery</button>
+            <p id="errorMessage" class="error"></p>
+        </form>
+
+        <div id="statusContainer" style="display: none;">
+            <h2>Delivery Status</h2>
+            <p id="statusMessage"></p>
+            <button id="successButton" style="background-color: green; color: white;">Success</button>
+            <button id="failButton" style="background-color: red; color: white;">Fail</button>
+        </div>
+    </div>
+</body>
+</html>

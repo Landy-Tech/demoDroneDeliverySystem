@@ -1,0 +1,64 @@
+body {
+  background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP4kb1_fjD4MBUt2yyXG2irtjB2cGL64TBJQ&s');
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+#app {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 350px;
+}
+
+input {
+  width: calc(100% - 20px);
+  margin: 10px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 10px;
+  font-size: 16px;
+  background-color: #61d6fa;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #52c3ea;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+#finishSuccess {
+  background-color: #28a745;
+}
+
+#finishSuccess:hover {
+  background-color: #218838;
+}
+
+#finishFailure {
+  background-color: #dc3545;
+}
+
+#finishFailure:hover {
+  background-color: #c82333;
+}
