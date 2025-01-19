@@ -1,4 +1,4 @@
-const socket = io('dronelandingservice-d0c7gxfwdkbjb7ar.italynorth-01.azurewebsites.net/drone-landing', { path: '/ws' });
+const socket = io('https://dronelandingservice-d0c7gxfwdkbjb7ar.italynorth-01.azurewebsites.net/drone-landing', { path: '/ws' });
 
 const deliveryForm = document.getElementById('deliveryForm');
 const landAirIdInput = document.getElementById('landAirId');
