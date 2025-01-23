@@ -9,13 +9,44 @@ const statusMessage = document.getElementById('statusMessage');
 const successButton = document.getElementById('successButton');
 const failButton = document.getElementById('failButton');
 
-// Submit a request to create a new delivery
-deliveryForm.addEventListener('submit', (e) => {
+// בדיקה אם המכשיר פעיל
+async function isDeviceActive(landAirId) {
+    try {
+        console.log(`Checking status for device: ${landAirId}`);
+        
+        const response = await fetch(`https://api-service-hab9fmgne7dxa5ad.italynorth-01.azurewebsites.net/api/device/${landAirId}`);
+        console.log(response, "Response object");
+
+        if (!response.ok) {
+            throw new Error(`Error fetching device status: ${response.statusText}`);
+        }
+
+        const device = await response.json();
+        console.log('Device data:', device);
+
+        return device.status === 'Active';
+    } catch (error) {
+        console.error('Error checking device status:', error);
+        return false;
+    }
+}
+
+// שליחת בקשה ליצירת משלוח חדש
+deliveryForm.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const landAirId = landAirIdInput.value.trim();
     const deliveryName = deliveryNameInput.value.trim();
 
+    // בדיקת סטטוס המכשיר
+    const isActive = await isDeviceActive(landAirId);
+
+    if (!isActive) {
+        errorMessage.textContent = `Device ${landAirId} is not active. Please check the status.`;
+        return;
+    }
+
+    // בדיקה אם החיבור לסוקט פתוח
     if (socket.connected) {
         socket.emit('NEW_DELIVERY', { landAirId, deliveryName });
     } else {
@@ -23,7 +54,7 @@ deliveryForm.addEventListener('submit', (e) => {
     }
 });
 
-// Listen for server messages
+// האזנה להודעות מהשרת
 socket.on('deliveryStarted', (data) => {
     if (data.status === 201) {
         errorMessage.textContent = '';
@@ -35,22 +66,28 @@ socket.on('deliveryStarted', (data) => {
     }
 });
 
-// Handle success
+// האזנה להודעות שגיאה
+socket.on('errorMessage', (data) => {
+    errorMessage.textContent = data.value;
+    setTimeout(() => {
+        errorMessage.textContent = '';
+    }, 5000); // הסתר את ההודעה לאחר 5 שניות
+});
+
+// טיפול באירוע הצלחה
 successButton.addEventListener('click', () => {
     if (socket.connected) {
-        const finishTime = new Date().toISOString(); // Get the current time
-        socket.emit('FINISH_DELIVERY', { success: true, finishTime });
+        socket.emit('FINISH_DELIVERY', { success: true });
     }
     alert("Delivery successful!");
     statusContainer.style.display = 'none';
     deliveryForm.style.display = 'block';
 });
 
-// Handle failure
+// טיפול באירוע כישלון
 failButton.addEventListener('click', () => {
     if (socket.connected) {
-        const finishTime = new Date().toISOString(); // Get the current time
-        socket.emit('FINISH_DELIVERY', { success: false, finishTime });
+        socket.emit('FINISH_DELIVERY', { success: false });
     }
     alert("Delivery failed!");
     statusContainer.style.display = 'none';
