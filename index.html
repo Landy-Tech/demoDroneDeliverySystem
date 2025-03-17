@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
     <script defer src="script.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBNVjEXhyDOUvcCECJFY5x_OGKt38dxVBk&libraries=places"></script>
 </head>
 <body>
     <div id="app">
@@ -14,6 +15,7 @@
             <h1>Start Delivery</h1>
             <input type="text" id="landAirId" placeholder="Land Air ID" required>
             <input type="text" id="deliveryName" placeholder="Delivery Name" required>
+            <input type="text" id="deviceAddress" placeholder="Device Address" required>
             <button type="submit">Start Delivery</button>
             <p id="errorMessage" class="error"></p>
         </form>
@@ -25,5 +27,13 @@
             <button id="failButton" style="background-color: red; color: white;">Fail</button>
         </div>
     </div>
+
+    <script>
+        function initAutocomplete() {
+            const input = document.getElementById('deviceAddress');
+            new google.maps.places.Autocomplete(input);
+        }
+        window.onload = initAutocomplete;
+    </script>
 </body>
 </html>
